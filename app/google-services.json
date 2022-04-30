@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "269772534309",
+    "project_id": "olympic-app-a85c5",
+    "storage_bucket": "olympic-app-a85c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:269772534309:android:8173e56c30b70ce5f0c5cc",
+        "android_client_info": {
+          "package_name": "com.nwanneka.yokyo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "269772534309-ft6c5t8hi98eqkvk1sarqrdsn8ni4cui.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nwanneka.yokyo",
+            "certificate_hash": "f6d0f6af2ca41755e856ee626ece44504507943a"
+          }
+        },
+        {
+          "client_id": "269772534309-0nnja3qe6op37g38k1712ku1btco59ce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC17srDbkzmlcG-wC4T1nJ5DiaIavsiCWk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "269772534309-0nnja3qe6op37g38k1712ku1btco59ce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
