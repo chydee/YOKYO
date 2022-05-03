@@ -1,23 +1,27 @@
 package com.nwanneka.yokyo.view.auth
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.nwanneka.yokyo.MainActivity
 import com.nwanneka.yokyo.R
 import com.nwanneka.yokyo.databinding.FragmentSignInBinding
-import com.nwanneka.yokyo.view.base.BaseFragment
-import com.nwanneka.yokyo.view.utils.autoCleared
-import com.nwanneka.yokyo.view.utils.getColorPrimary
-import com.nwanneka.yokyo.view.utils.setClickableText
-import com.nwanneka.yokyo.view.utils.showToastMessage
+import com.nwanneka.yokyo.view.utils.*
+import dagger.hilt.android.AndroidEntryPoint
 
-class FragmentSignIn : BaseFragment() {
+@AndroidEntryPoint
+class FragmentSignIn : Fragment() {
 
     private val TAG: String? = FragmentSignIn::class.simpleName
     private var binding: FragmentSignInBinding by autoCleared()
+
+    private val viewModel: AuthViewModel by viewModels()
 
 
     override fun onCreateView(
@@ -33,6 +37,38 @@ class FragmentSignIn : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureSignUp()
+
+        binding.btnSignIn.setOnClickListener {
+            it.isEnabled = false
+            viewModel.signIn(email = binding.inputEmailAddress.takeText(), password = binding.inputPassword.takeText())
+        }
+
+        binding.inputEmailAddress.doAfterTextChanged {
+            val errorText = viewModel.verifyMailText(requireContext(), it.toString())
+            binding.emailAddressTIL.isErrorEnabled = errorText.isNotEmpty()
+            binding.emailAddressTIL.error = errorText
+            enableButton(email = errorText)
+        }
+
+        binding.inputPassword.doAfterTextChanged {
+            val errorText = viewModel.verifyPasswordText(requireContext(), it.toString())
+            binding.passwordTIL.isErrorEnabled = errorText.isNotEmpty()
+            binding.passwordTIL.error = errorText
+            enableButton(password = errorText)
+        }
+
+        viewModel.firebaseUser.observe(viewLifecycleOwner) {
+            if (it != null) {
+                showToastMessage("Authentication Successful")
+                startActivity(Intent(requireActivity(), MainActivity::class.java))
+            }
+        }
+
+        viewModel.errorLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                showToastMessage(it)
+            }
+        }
     }
 
     private fun configureSignUp() {
@@ -45,25 +81,14 @@ class FragmentSignIn : BaseFragment() {
     }
 
 
-    private fun collectDataAndProcess(email: String, password: String) {
-
-    }
-
-    private fun processSignIn(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithEmail:success")
-                    val user = auth.currentUser
-                    showToastMessage("Authentication Successful")
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    showToastMessage("Authentication failed.")
-                }
-            }
-
+    private fun enableButton(email: String? = null, password: String? = null) {
+        binding.apply {
+            val emailError = email
+                ?: viewModel.verifyMailText(requireContext(), binding.inputEmailAddress.takeText())
+            val passwordError = password
+                ?: viewModel.verifyPasswordText(requireContext(), binding.inputPassword.takeText())
+            binding.btnSignIn.isEnabled = emailError.isEmpty() && passwordError.isEmpty()
+        }
     }
 
 }

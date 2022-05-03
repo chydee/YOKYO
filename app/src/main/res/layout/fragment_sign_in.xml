@@ -85,6 +85,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSignIn"
                 android:layout_width="match_parent"
+                android:enabled="false"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/big_top_margin"
                 android:fontFamily="@font/roboto_medium"
