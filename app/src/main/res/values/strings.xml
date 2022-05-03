@@ -9,4 +9,7 @@
     <string name="text_label_forgot_password">Forgot Password</string>
     <string name="new_account">Don’t have an account? SIGN UP</string>
     <string name="existing_account">Already  have an account? SIGN IN</string>
+
+    <string name="field_empty">Field cannot be empty</string>
+    <string name="password_8_characters_long">Password must be at least 8 characters long</string>
 </resources>
