@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.auth.FragmentSignIn">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/medium_padding"
+            android:paddingVertical="@dimen/medium_padding">
+
+            <TextView
+                android:id="@+id/appNameTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/big_top_margin"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/app_name"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="@dimen/big_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/text_label_sign_in"
+                android:textAllCaps="true"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="@dimen/medium_text_size"
+                android:textStyle="normal" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailAddressTIL"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/big_top_margin"
+                android:hint="@string/hint_email"
+                app:hintEnabled="true"
+                app:hintTextColor="@color/browser_actions_bg_grey">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputEmailAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto"
+                    android:inputType="textEmailAddress"
+                    android:textSize="@dimen/normal_text_size" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordTIL"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_almost_big"
+                android:hint="@string/hint_password"
+                app:hintEnabled="true"
+                app:hintTextColor="@color/browser_actions_bg_grey">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto"
+                    android:inputType="textEmailAddress"
+                    android:textSize="@dimen/normal_text_size" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSignIn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/big_top_margin"
+                android:fontFamily="@font/roboto_medium"
+                android:minHeight="@dimen/auth_button_min_height"
+                android:text="@string/text_label_sign_in"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/extra_medium_text"
+                app:cornerRadius="@dimen/auth_button_corners" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnForgotPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:fontFamily="@font/roboto_medium"
+                android:minHeight="@dimen/auth_button_min_height"
+                android:text="@string/text_label_forgot_password"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/extra_medium_text"
+                app:backgroundTint="@color/secondaryColor"
+                app:cornerRadius="@dimen/auth_button_corners" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/newAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/roboto"
+                android:text="@string/new_account"
+                android:textSize="@dimen/medium_text_size"
+                android:textStyle="normal" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

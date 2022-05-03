@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="big_text_size">28sp</dimen>
+    <dimen name="big_top_margin">50dp</dimen>
+    <dimen name="medium_text_size">16sp</dimen>
+    <dimen name="medium_padding">16dp</dimen>
+    <dimen name="normal_text_size">14sp</dimen>
+    <dimen name="margin_almost_big">20dp</dimen>
+    <dimen name="extra_medium_text">18sp</dimen>
+    <dimen name="auth_button_corners">10dp</dimen>
+    <dimen name="auth_button_min_height">60dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+</resources>
