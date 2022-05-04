@@ -5,9 +5,13 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/layout/activity_yokyo_auth.xml" value="0.28055555555555556" />
+        <entry key="app/src/main/res/layout/fragment_about.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/layout/fragment_reset_password.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.28055555555555556" />
+        <entry key="app/src/main/res/menu/home_menu.xml" value="0.28055555555555556" />
+        <entry key="app/src/main/res/menu/main_menu.xml" value="0.28055555555555556" />
+        <entry key="app/src/main/res/menu/profile_menu.xml" value="0.28055555555555556" />
       </map>
     </option>
   </component>

@@ -14,4 +14,9 @@
     <string name="password_8_characters_long">Password must be at least 8 characters long</string>
     <string name="reset_password_link">Enter Your E-mail address and a reset password link will be sent to your e-mail</string>
     <string name="text_submit_label">Submit</string>
+    <string name="title_home">Home</string>
+    <string name="title_logs">My Logs</string>
+    <string name="title_profile">My Profile</string>
+    <string name="title_about">About</string>
+    <string name="title_logout">Logout</string>
 </resources>
