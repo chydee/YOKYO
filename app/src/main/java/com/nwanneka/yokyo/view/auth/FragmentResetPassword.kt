@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.nwanneka.yokyo.databinding.FragmentResetPasswordBinding
 import com.nwanneka.yokyo.view.utils.autoCleared
+import com.nwanneka.yokyo.view.utils.showToastMessage
 import com.nwanneka.yokyo.view.utils.takeText
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,6 +43,19 @@ class FragmentResetPassword : Fragment() {
             binding.emailAddressTIL.isErrorEnabled = errorText.isNotEmpty()
             binding.emailAddressTIL.error = errorText
             enableButton(email = errorText)
+        }
+
+        authViewModel.resetLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                showToastMessage(it)
+                findNavController().popBackStack()
+            }
+        }
+
+        authViewModel.errorLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                showToastMessage(it)
+            }
         }
     }
 

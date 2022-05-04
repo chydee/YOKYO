@@ -14,7 +14,10 @@
         android:theme="@style/Theme.Yokyo">
         <activity
             android:name=".view.auth.YokyoAuthActivity"
+            android:clearTaskOnLaunch="true"
             android:exported="true"
+            android:launchMode="singleTop"
+            android:noHistory="true"
             android:theme="@style/Theme.Yokyo.Auth">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,9 +28,9 @@
         <activity
             android:name=".MainActivity"
             android:clearTaskOnLaunch="true"
+            android:exported="true"
             android:launchMode="singleTop"
-            android:noHistory="true"
-            android:exported="true">
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

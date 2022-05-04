@@ -5,8 +5,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.nwanneka.yokyo.databinding.ActivityMainBinding
 import com.nwanneka.yokyo.view.main.MainViewModel
+import com.nwanneka.yokyo.view.utils.hide
+import com.nwanneka.yokyo.view.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,8 +29,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+        findViewById<BottomNavigationView>(R.id.bottomNavigationMenu)
+            .setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.fragmentAbout) {
+                binding.bottomNavigationMenu.hide()
+            } else {
+                binding.bottomNavigationMenu.show()
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -9,7 +9,18 @@
         android:id="@+id/fragmentHome"
         android:name="com.nwanneka.yokyo.view.main.FragmentHome"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/to_fragmentAbout"
+            app:destination="@id/fragmentAbout"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/fragmentHome"
+            app:popUpToInclusive="false" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentLogs"
         android:name="com.nwanneka.yokyo.view.main.FragmentLogs"
