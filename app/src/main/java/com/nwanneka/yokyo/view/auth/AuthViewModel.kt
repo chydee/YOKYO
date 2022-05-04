@@ -12,9 +12,10 @@ import com.nwanneka.yokyo.R
 import com.nwanneka.yokyo.view.utils.minimumEightInLength
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel : ViewModel() {
+class AuthViewModel @Inject constructor() : ViewModel() {
 
     private val viewModelJob = Job()
     private val coroutineScope: CoroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
