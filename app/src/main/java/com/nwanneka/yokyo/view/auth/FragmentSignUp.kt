@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.nwanneka.yokyo.MainActivity
 import com.nwanneka.yokyo.R
@@ -20,7 +20,7 @@ class FragmentSignUp : Fragment() {
 
     private val TAG: String? = FragmentSignUp::class.simpleName
 
-    private val viewModel: AuthViewModel by viewModels()
+    private val viewModel: AuthViewModel by activityViewModels()
 
     private var binding: FragmentSignUpBinding by autoCleared()
 
@@ -39,7 +39,7 @@ class FragmentSignUp : Fragment() {
 
         binding.btnSignUp.setOnClickListener {
             it.isEnabled = false
-            viewModel.signIn(email = binding.inputEmailAddress.takeText(), password = binding.inputPassword.takeText())
+            viewModel.signUp(email = binding.inputEmailAddress.takeText(), password = binding.inputPassword.takeText())
         }
 
         binding.inputEmailAddress.doAfterTextChanged {

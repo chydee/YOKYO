@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Yokyo">
         <activity
-            android:name=".view.YokyoAuthActivity"
+            android:name=".view.auth.YokyoAuthActivity"
             android:exported="true"
             android:theme="@style/Theme.Yokyo.Auth">
             <intent-filter>
@@ -24,11 +24,14 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:clearTaskOnLaunch="true"
+            android:launchMode="singleTop"
+            android:noHistory="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
     </application>

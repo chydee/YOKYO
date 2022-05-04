@@ -28,7 +28,11 @@ class AuthViewModel @Inject constructor() : ViewModel() {
     val firebaseUser: LiveData<FirebaseUser?>
         get() = _userLiveData
 
-    private val auth: FirebaseAuth = Firebase.auth
+    var auth: FirebaseAuth? = null
+
+    init {
+        auth = Firebase.auth
+    }
 
     fun verifyMailText(context: Context, mail: String): String {
         return if (mail.isEmpty()) context.getString(R.string.field_empty)
@@ -45,40 +49,42 @@ class AuthViewModel @Inject constructor() : ViewModel() {
 
     fun signIn(email: String, password: String) {
         coroutineScope.launch {
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        _userLiveData.postValue(auth.currentUser)
-                    } else {
-                        _userLiveData.postValue(null)
-                        _error.postValue("Authentication Failed!")
+            if (auth != null) {
+                auth!!.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            _userLiveData.postValue(auth!!.currentUser)
+                        } else {
+                            _userLiveData.postValue(null)
+                        }
                     }
-                }
-                .addOnFailureListener {
-                    it.printStackTrace()
-                    _userLiveData.postValue(null)
-                    _error.postValue(it.message)
-                }
+                    .addOnFailureListener {
+                        it.printStackTrace()
+                        _userLiveData.postValue(null)
+                        _error.postValue(it.message ?: "Authentication Failed!")
+                    }
+            }
         }
 
     }
 
     fun signUp(email: String, password: String) {
         coroutineScope.launch {
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        _userLiveData.postValue(auth.currentUser)
-                    } else {
-                        _userLiveData.postValue(null)
-                        _error.postValue("Account creation Failed!")
+            if (auth != null) {
+                auth!!.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            _userLiveData.postValue(auth!!.currentUser)
+                        } else {
+                            _userLiveData.postValue(null)
+                        }
                     }
-                }
-                .addOnFailureListener {
-                    it.printStackTrace()
-                    _userLiveData.postValue(null)
-                    _error.postValue(it.message)
-                }
+                    .addOnFailureListener {
+                        it.printStackTrace()
+                        _userLiveData.postValue(null)
+                        _error.postValue(it.message ?: "Authentication Failed!")
+                    }
+            }
         }
     }
 
