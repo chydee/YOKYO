@@ -4,13 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,6 +24,42 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
     init {
         auth = Firebase.auth
+    }
+
+    private val _userLiveData = MutableLiveData<FirebaseUser?>()
+    val firebaseUser: LiveData<FirebaseUser?>
+        get() = _userLiveData
+
+    fun updateEmail(email: String) {
+        coroutineScope.launch {
+            if (auth != null) {
+                auth!!.currentUser?.updateEmail(email)
+                    ?.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            _userLiveData.postValue(FirebaseAuth.getInstance().currentUser)
+                        }
+                    }
+                    ?.addOnFailureListener { exception: Exception ->
+                        _error.postValue(exception.message)
+                    }
+            }
+        }
+    }
+
+    fun deleteMyAccount() {
+        coroutineScope.launch {
+            if (auth != null) {
+                auth!!.currentUser?.delete()
+                    ?.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            _userLiveData.postValue(FirebaseAuth.getInstance().currentUser)
+                        }
+                    }
+                    ?.addOnFailureListener { exception: Exception ->
+                        _error.postValue(exception.message)
+                    }
+            }
+        }
     }
 
     override fun onCleared() {
