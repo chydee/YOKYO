@@ -88,6 +88,30 @@ class AuthViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    private val _resetPass = MutableLiveData<String?>()
+    val resetLiveData: LiveData<String?>
+        get() = _resetPass
+
+    fun resetPassword(email: String) {
+        coroutineScope.launch {
+            if (auth != null) {
+                auth!!.sendPasswordResetEmail(email)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            _resetPass.postValue("A link to reset your password has been sent to $email")
+                        } else {
+                            _resetPass.postValue(null)
+                        }
+                    }
+                    .addOnFailureListener {
+                        it.printStackTrace()
+                        _userLiveData.postValue(null)
+                        _error.postValue(it.message ?: "Unknown error")
+                    }
+            }
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()

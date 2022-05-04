@@ -12,4 +12,6 @@
 
     <string name="field_empty">Field cannot be empty</string>
     <string name="password_8_characters_long">Password must be at least 8 characters long</string>
+    <string name="reset_password_link">Enter Your E-mail address and a reset password link will be sent to your e-mail</string>
+    <string name="text_submit_label">Submit</string>
 </resources>
