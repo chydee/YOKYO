@@ -69,6 +69,10 @@ class FragmentSignIn : Fragment() {
                 showToastMessage(it)
             }
         }
+
+        binding.btnForgotPassword.setOnClickListener {
+            findNavController().navigate(R.id.to_fragmentResetPassword)
+        }
     }
 
     private fun configureSignUp() {
