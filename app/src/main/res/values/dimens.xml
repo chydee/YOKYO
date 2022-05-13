@@ -10,7 +10,8 @@
     <dimen name="auth_button_corners">10dp</dimen>
     <dimen name="auth_button_min_height">60dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
+    <dimen name="small_medium">8dp</dimen>
     <dimen name="highlight_card_elevation">8dp</dimen>
-    <dimen name="highlight_card_corners">15dp</dimen>
+    <dimen name="highlight_card_corners">10dp</dimen>
     <dimen name="highlight_card_margin">8dp</dimen>
 </resources>

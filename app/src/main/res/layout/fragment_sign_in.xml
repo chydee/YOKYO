@@ -67,6 +67,7 @@
                 android:id="@+id/passwordTIL"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
+                app:passwordToggleEnabled="true"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_almost_big"
                 android:hint="@string/hint_password"

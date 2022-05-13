@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Yokyo</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="text_label_sign_in">Sign In</string>
     <string name="text_label_sign_up">Sign Up</string>
     <string name="hint_email">E-mail</string>
@@ -20,4 +19,15 @@
     <string name="title_about">About</string>
     <string name="title_logout">Logout</string>
     <string name="empty_highlights">No Game Highlights Found</string>
+    <string name="higlight_thumbnail_desc">highlight thumbnail</string>
+    <string name="personal_details_label">Personal Details</string>
+    <string name="btn_save_text">Save</string>
+    <string name="password_details_label">Password Details</string>
+    <string name="new_password_hint">New Password</string>
+    <string name="old_password_hint">Old Password</string>
+    <string name="change_password_text">Change Password</string>
+    <string name="delete_account_text">Delete Account</string>
+    <string name="yokyo_2022">YOKYO 2022</string>
+    <string name="details">This app was built by NWANNEKA JENNIFER EJINKONYE with ❤️ and 👩🏼‍💻.\n\n<b>CET333 Product Development</b>\n<u>Programme:</u> <b>MOBILE AND WEB TECHNOLOGY</b></string>
+    <string name="more_details">The Fun Olympic Committee is at the very heart of world sport, supporting every Olympic Movement stakeholder, promoting Olympism worldwide, and overseeing the regular celebration of the Olympic Games. They the governing body of the Olympic movement in the city of Beijing, which promotes Olympic games across the globe and leads the Olympic movement. The committee is organising Olympic games to be held in Beijing after a worldwide pandemic. The committee has requested me to develop an app which the athletes will use while they attend the game that will record their movement, venues/location, dates, and time.</string>
 </resources>
