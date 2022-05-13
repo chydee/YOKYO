@@ -13,6 +13,7 @@
         <entry key="app/src/main/res/layout/fragment_reset_password.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.28055555555555556" />
+        <entry key="app/src/main/res/layout/item_highlight.xml" value="0.25" />
         <entry key="app/src/main/res/menu/home_menu.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/menu/profile_menu.xml" value="0.28055555555555556" />

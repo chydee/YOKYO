@@ -1,14 +1,22 @@
 package com.nwanneka.yokyo.view.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -65,10 +73,27 @@ class MainViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    private val _highlights = MutableLiveData<DataSnapshot>()
+    val highlightSnapshot: LiveData<DataSnapshot>
+        get() = _highlights
+
+    fun fetchHighlights() {
+        coroutineScope.launch {
+            database?.child("highlights")?.get()
+                ?.addOnSuccessListener { snapshot ->
+                    if (snapshot.exists() && snapshot.hasChildren()) {
+                        _highlights.postValue(snapshot)
+                        snapshot.children.forEach {
+                            Log.d("Highlights", (it.child("id").getValue<Int>() as Int).toString())
+                        }
+                    }
+                }
+        }
+    }
+
 
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
-        coroutineScope.cancel()
     }
 }
