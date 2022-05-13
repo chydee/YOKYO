@@ -21,9 +21,12 @@ class MainViewModel @Inject constructor() : ViewModel() {
         get() = _error
 
     var auth: FirebaseAuth? = null
+    var database: DatabaseReference? = null
+
 
     init {
         auth = Firebase.auth
+        database = Firebase.database.reference
     }
 
     private val _userLiveData = MutableLiveData<FirebaseUser?>()
@@ -61,6 +64,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
             }
         }
     }
+
 
     override fun onCleared() {
         super.onCleared()

@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Yokyo">
         <activity
+            android:name=".view.map.MapActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.auth.YokyoAuthActivity"
             android:clearTaskOnLaunch="true"
             android:exported="true"
