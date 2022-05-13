@@ -30,4 +30,9 @@
     <string name="yokyo_2022">YOKYO 2022</string>
     <string name="details">This app was built by NWANNEKA JENNIFER EJINKONYE with ❤️ and 👩🏼‍💻.\n\n<b>CET333 Product Development</b>\n<u>Programme:</u> <b>MOBILE AND WEB TECHNOLOGY</b></string>
     <string name="more_details">The Fun Olympic Committee is at the very heart of world sport, supporting every Olympic Movement stakeholder, promoting Olympism worldwide, and overseeing the regular celebration of the Olympic Games. They the governing body of the Olympic movement in the city of Beijing, which promotes Olympic games across the globe and leads the Olympic movement. The committee is organising Olympic games to be held in Beijing after a worldwide pandemic. The committee has requested me to develop an app which the athletes will use while they attend the game that will record their movement, venues/location, dates, and time.</string>
+    <string name="pass_update_error">Error updating password</string>
+    <string name="pass_update_success">Password Updated Successfully</string>
+    <string name="email_update_success">Email Updated Successfully</string>
+    <string name="account_delete_success">Account Deleted Successfully</string>
+    <string name="account_delete_error">Sorry, this account cannot be deleted at this moment</string>
 </resources>

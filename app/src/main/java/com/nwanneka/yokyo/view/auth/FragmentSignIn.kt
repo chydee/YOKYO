@@ -11,9 +11,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.nwanneka.yokyo.MainActivity
 import com.nwanneka.yokyo.R
+import com.nwanneka.yokyo.data.SharedPreferenceManager
 import com.nwanneka.yokyo.databinding.FragmentSignInBinding
 import com.nwanneka.yokyo.view.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentSignIn : Fragment() {
@@ -22,6 +24,9 @@ class FragmentSignIn : Fragment() {
     private var binding: FragmentSignInBinding by autoCleared()
 
     private val viewModel: AuthViewModel by activityViewModels()
+
+    @Inject
+    lateinit var sharedPref: SharedPreferenceManager
 
 
     override fun onCreateView(
@@ -59,6 +64,7 @@ class FragmentSignIn : Fragment() {
 
         viewModel.firebaseUser.observe(viewLifecycleOwner) {
             if (it != null) {
+                sharedPref.setUserPassword(binding.inputEmailAddress.takeText())
                 showToastMessage("Authentication Successful")
                 startActivity(Intent(requireActivity(), MainActivity::class.java))
             }
