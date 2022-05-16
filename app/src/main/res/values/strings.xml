@@ -41,4 +41,6 @@
     <string name="remove_btn_text">Remove</string>
     <string name="share_btn_text">Share</string>
     <string name="log_details">You were at Beijing City on 8 May, 2022 at 09:20AM</string>
+    <string name="log_screen_info">Here you can find your location logs</string>
+    <string name="empty_log_state">You don\'t have anything in your log, click on the plus \'+\' button to create a new log</string>
 </resources>

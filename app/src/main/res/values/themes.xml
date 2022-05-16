@@ -72,4 +72,31 @@
     <style name="SearchViewTheme" parent="Widget.AppCompat.Light.SearchView">
         <item name="android:textColorHint">#818181</item>
     </style>
+
+    <style name="Widget.MaterialComponents.FloatingActionButton.Custom" parent="Widget.Design.FloatingActionButton">
+        <item name="android:background">@null</item>
+        <item name="enforceMaterialTheme">true</item>
+        <item name="ensureMinTouchTargetSize">true</item>
+        <item name="elevation" tools:ignore="PrivateResource">@dimen/mtrl_fab_elevation</item>
+        <item name="tint">@color/primaryColor</item>
+        <item name="hoveredFocusedTranslationZ" tools:ignore="PrivateResource">
+            @dimen/mtrl_fab_translation_z_hovered_focused
+        </item>
+        <item name="pressedTranslationZ" tools:ignore="PrivateResource">
+            @dimen/mtrl_fab_translation_z_pressed
+        </item>
+        <item name="rippleColor" tools:ignore="PrivateResource">@color/mtrl_fab_ripple_color</item>
+        <item name="showMotionSpec" tools:ignore="PrivateResource">
+            @animator/mtrl_fab_show_motion_spec
+        </item>
+        <item name="hideMotionSpec" tools:ignore="PrivateResource">
+            @animator/mtrl_fab_hide_motion_spec
+        </item>
+        <item name="shapeAppearance">?attr/shapeAppearanceSmallComponent</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearanceOverlay.MaterialComponents.FloatingActionButton
+        </item>
+    </style>
+
+
 </resources>

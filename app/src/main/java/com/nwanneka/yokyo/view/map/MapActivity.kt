@@ -1,7 +1,6 @@
 package com.nwanneka.yokyo.view.map
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
@@ -22,10 +21,15 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.nwanneka.yokyo.R
+import com.nwanneka.yokyo.data.Logg
+import com.nwanneka.yokyo.view.main.modals.CreateLogModal
+import com.nwanneka.yokyo.view.main.modals.CreateLogModalDelegate
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 import java.util.*
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback {
+@AndroidEntryPoint
+class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDelegate {
 
     private var mMap: GoogleMap? = null
 
@@ -35,6 +39,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private var mFusedLocationClient: FusedLocationProviderClient? = null
 
     private var addressLine: String? = null
+    private var time: String? = null
+    private var date: String? = null
 
     private var mLocationCallback: LocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
@@ -114,10 +120,18 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mMap!!.setOnMapClickListener { latLng: LatLng ->
             getAddress(latLng.latitude, latLng.longitude)
-            val returnIntent = Intent()
+
+            val bundle: Bundle = Bundle()
+            //bundle.putParcelable(EXTRA_DOCUMENT, documents)
+            val createLogModal = CreateLogModal(this@MapActivity)
+            createLogModal.arguments = bundle
+            createLogModal.isCancelable = true
+            createLogModal.show(supportFragmentManager, createLogModal.tag)
+
+            /*val returnIntent = Intent()
             returnIntent.putExtra("location", addressLine)
             setResult(RESULT_OK, returnIntent)
-            finish()
+            finish()*/
         }
     }
 
@@ -185,5 +199,17 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             e.printStackTrace()
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun getCurrentTimeAndDate() {
+
+    }
+
+    override fun onCancel(log: Logg) {
+
+    }
+
+    override fun onSave(log: Logg) {
+
     }
 }

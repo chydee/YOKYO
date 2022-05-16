@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_small"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/logIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_pin_drop_24"
+            app:tint="@color/primaryLightColor"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/logLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/black"
+            android:textSize="@dimen/xx_text_size"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/logIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Beijin, Chibaku" />
+
+        <TextView
+            android:id="@+id/logDateTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:textColor="@color/secondaryLightColor"
+            android:textSize="@dimen/extra_medium_text"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="@+id/logLocation"
+            app:layout_constraintStart_toStartOf="@+id/logLocation"
+            app:layout_constraintTop_toBottomOf="@+id/logLocation"
+            tools:text="09:20AM, 8 May, 2022." />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:background="@color/secondaryLightColor" />
+</androidx.appcompat.widget.LinearLayoutCompat>

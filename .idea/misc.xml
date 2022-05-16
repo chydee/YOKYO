@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/ic_baseline_play_circle_filled_24.xml" value="0.1755" />
+        <entry key="app/src/main/res/drawable/ic_upload_docs.xml" value="0.1755" />
         <entry key="app/src/main/res/drawable/ic_volume_off_grey_24dp.xml" value="0.1755" />
         <entry key="app/src/main/res/drawable/ic_volume_up_grey.xml" value="0.1755" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.28055555555555556" />
@@ -17,6 +18,7 @@
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.28055555555555556" />
         <entry key="app/src/main/res/layout/item_highlight.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_log.xml" value="0.25757575757575757" />
         <entry key="app/src/main/res/layout/sheet_create_log.xml" value="0.25757575757575757" />
         <entry key="app/src/main/res/layout/sheet_log_details.xml" value="0.25757575757575757" />
         <entry key="app/src/main/res/menu/home_menu.xml" value="0.28055555555555556" />
