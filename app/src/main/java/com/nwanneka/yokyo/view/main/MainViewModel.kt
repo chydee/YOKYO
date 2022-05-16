@@ -12,14 +12,16 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.nwanneka.yokyo.R
+import com.nwanneka.yokyo.data.Logg
 import com.nwanneka.yokyo.view.utils.minimumEightInLength
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,8 +33,9 @@ class MainViewModel @Inject constructor() : ViewModel() {
     val errorLiveData: LiveData<String>
         get() = _error
 
+    private val db = Firebase.firestore
     var auth: FirebaseAuth? = null
-    var database: DatabaseReference? = null
+    private var database: DatabaseReference? = null
 
 
     init {
@@ -40,6 +43,56 @@ class MainViewModel @Inject constructor() : ViewModel() {
         database = Firebase.database.reference
 
         getCurrentUser()
+    }
+
+    private val _log = MutableLiveData<DocumentReference>()
+    val logLiveData: LiveData<DocumentReference>
+        get() = _log
+
+    fun createLogg(log: Logg) {
+        coroutineScope.launch {
+            val logObject = hashMapOf(
+                "id" to log.id,
+                "uid" to log.uid,
+                "location" to log.location,
+                "long" to log.long,
+                "lat" to log.lat,
+                "date" to log.date,
+                "time" to log.time,
+            )
+            db.collection("logs")
+                .add(logObject)
+                .addOnSuccessListener {
+                    _log.postValue(it)
+                }
+                .addOnFailureListener { e ->
+                    _error.postValue(e.message)
+                    e.printStackTrace()
+                }
+        }
+    }
+
+    private val _myLogs = MutableLiveData<QuerySnapshot>()
+    val myLogs: LiveData<QuerySnapshot>
+        get() = _myLogs
+
+    fun fetchAllMyLog(uid: String) {
+        coroutineScope.launch {
+            withContext(Dispatchers.Default) {
+                val settings = FirebaseFirestoreSettings.Builder()
+                    .setPersistenceEnabled(true)
+                    .build()
+                db.firestoreSettings = settings
+                db.collection("logs").whereEqualTo("uid", uid).get()
+                    .addOnSuccessListener {
+                        _myLogs.postValue(it)
+                    }
+                    .addOnFailureListener {
+                        it.printStackTrace()
+                        _error.postValue(it.message)
+                    }
+            }
+        }
     }
 
     private val _userLiveData = MutableLiveData<FirebaseUser?>()
