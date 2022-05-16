@@ -35,4 +35,10 @@
     <string name="email_update_success">Email Updated Successfully</string>
     <string name="account_delete_success">Account Deleted Successfully</string>
     <string name="account_delete_error">Sorry, this account cannot be deleted at this moment</string>
+    <string name="save_quest">Save Location to your log?</string>
+    <string name="save_btn_text">Save</string>
+    <string name="cancel_btn_text">Cancel</string>
+    <string name="remove_btn_text">Remove</string>
+    <string name="share_btn_text">Share</string>
+    <string name="log_details">You were at Beijing City on 8 May, 2022 at 09:20AM</string>
 </resources>
