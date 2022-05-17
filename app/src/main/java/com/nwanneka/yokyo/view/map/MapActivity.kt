@@ -1,6 +1,7 @@
 package com.nwanneka.yokyo.view.map
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
@@ -71,10 +72,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
     }
 
 
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
         supportActionBar!!.title = "Select location"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDefaultDisplayHomeAsUpEnabled(true)
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -145,6 +149,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
         if (mFusedLocationClient != null) {
             mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 
     private val MY_PERMISSIONS_REQUEST_LOCATION = 99

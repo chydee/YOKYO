@@ -17,9 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Yokyo">
         <activity
-            android:name=".view.map.MapActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.auth.YokyoAuthActivity"
             android:exported="true"
             android:noHistory="true"
@@ -40,6 +37,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.map.MapActivity"
+            android:exported="true"
+            android:noHistory="false"
+            android:parentActivityName=".view.main.MainActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
