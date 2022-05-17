@@ -15,6 +15,7 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.nwanneka.yokyo.R
@@ -82,7 +83,10 @@ class MainViewModel @Inject constructor() : ViewModel() {
                     .setPersistenceEnabled(true)
                     .build()
                 db.firestoreSettings = settings
-                db.collection("logs").whereEqualTo("uid", uid).get()
+                val ref = db.collection("logs").whereEqualTo("uid", uid)
+                // Source can be CACHE, SERV
+                val source = Source.CACHE
+                ref.get(source)
                     .addOnSuccessListener {
                         _myLogs.postValue(it)
                     }
@@ -93,6 +97,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
             }
         }
     }
+
 
     private val _userLiveData = MutableLiveData<FirebaseUser?>()
     val firebaseUser: LiveData<FirebaseUser?>

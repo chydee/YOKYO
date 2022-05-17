@@ -21,9 +21,7 @@
             android:exported="false" />
         <activity
             android:name=".view.auth.YokyoAuthActivity"
-            android:clearTaskOnLaunch="true"
             android:exported="true"
-            android:launchMode="singleTop"
             android:noHistory="true"
             android:theme="@style/Theme.Yokyo.Auth">
             <intent-filter>
@@ -34,9 +32,7 @@
         </activity>
         <activity
             android:name=".view.main.MainActivity"
-            android:clearTaskOnLaunch="true"
             android:exported="true"
-            android:launchMode="singleTop"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

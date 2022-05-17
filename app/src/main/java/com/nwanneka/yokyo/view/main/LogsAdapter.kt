@@ -19,7 +19,8 @@ class LogsAdapter : ListAdapter<Logg, LogsAdapter.LogsViewHolder>(DiffCallback) 
     inner class LogsViewHolder(private val binding: ItemLogBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(logg: Logg) {
-            // binding.highlightTitle.text = highlight.title
+            binding.logLocation.text = logg.location
+            binding.logDateTime.text = "${logg.date} ${logg.time}"
         }
     }
 
@@ -36,6 +37,9 @@ class LogsAdapter : ListAdapter<Logg, LogsAdapter.LogsViewHolder>(DiffCallback) 
     override fun onBindViewHolder(holder: LogsViewHolder, position: Int) {
         val logItem = getItem(position)
         holder.bind(logItem)
+        holder.itemView.setOnClickListener {
+            listener.onLogItemClicked(logItem)
+        }
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<Logg>() {

@@ -7,16 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.firebase.firestore.ktx.toObject
 import com.nwanneka.yokyo.data.Logg
 import com.nwanneka.yokyo.databinding.FragmentLogsBinding
+import com.nwanneka.yokyo.view.main.modals.LogDetailsModal
+import com.nwanneka.yokyo.view.main.modals.LogDetailsModalDelegate
 import com.nwanneka.yokyo.view.map.MapActivity
 import com.nwanneka.yokyo.view.utils.autoCleared
 import com.nwanneka.yokyo.view.utils.hide
 import com.nwanneka.yokyo.view.utils.show
+import com.nwanneka.yokyo.view.utils.showToastMessage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FragmentLogs : Fragment() {
+class FragmentLogs : Fragment(), LogDetailsModalDelegate {
 
     private var _binding: FragmentLogsBinding by autoCleared()
     private val binding
@@ -37,9 +41,16 @@ class FragmentLogs : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        logs = arrayListOf()
+        val uid = viewModel.auth?.currentUser?.uid
+        fetchMyLogs(uid)
 
         binding.fabCreateLog.setOnClickListener {
             startActivity(Intent(requireContext(), MapActivity::class.java))
+        }
+
+        viewModel.errorLiveData.observe(viewLifecycleOwner) {
+            showToastMessage(it)
         }
     }
 
@@ -54,7 +65,12 @@ class FragmentLogs : Fragment() {
             logsAdapter.setOnItemClickListener(object : LogsAdapter.OnItemClickListener {
 
                 override fun onLogItemClicked(logg: Logg) {
-                    TODO("Not yet implemented")
+                    val bundle: Bundle = Bundle()
+                    bundle.putParcelable("EXTRA_LOG", logg)
+                    val logDetailsModal = LogDetailsModal(this@FragmentLogs)
+                    logDetailsModal.arguments = bundle
+                    logDetailsModal.isCancelable = true
+                    logDetailsModal.show(childFragmentManager, logDetailsModal.tag)
                 }
             })
         } else {
@@ -62,6 +78,21 @@ class FragmentLogs : Fragment() {
             binding.listGroup.hide()
         }
 
+    }
+
+    private fun fetchMyLogs(uid: String?) {
+        binding.progressLoader.show()
+        uid?.let { viewModel.fetchAllMyLog(it) }
+        viewModel.myLogs.observe(viewLifecycleOwner) { snapshot ->
+            binding.progressLoader.hide()
+            snapshot?.documents?.forEach {
+                val log = it.toObject<Logg>()
+                if (log != null) {
+                    logs.add(log)
+                }
+            }
+            configureRecyclerView()
+        }
     }
 
     private fun deleteLog() {
@@ -77,5 +108,13 @@ class FragmentLogs : Fragment() {
 
         val shareIntent = Intent.createChooser(sendIntent, "Share Yokyo 2022 Highlight")
         startActivity(shareIntent)
+    }
+
+    override fun onRemove(logg: Logg) {
+        showToastMessage("Coming soon")
+    }
+
+    override fun onShare(content: String) {
+        shareLogInfo(content)
     }
 }

@@ -11,11 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.database.ktx.getValue
 import com.nwanneka.yokyo.R
+import com.nwanneka.yokyo.core.GlideApp
 import com.nwanneka.yokyo.data.Highlight
 import com.nwanneka.yokyo.databinding.FragmentHomeBinding
 import com.nwanneka.yokyo.view.utils.autoCleared
@@ -32,6 +32,7 @@ class FragmentHome : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
 
     private lateinit var highlights: ArrayList<Highlight>
+    private lateinit var highlightAdapter: HighlightAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,14 +44,17 @@ class FragmentHome : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        highlights = arrayListOf()
+        highlightAdapter = HighlightAdapter(initGlide())
         setupHomeMenu()
         fetchHighlights()
     }
 
     private fun fetchHighlights() {
         binding.progressLoader.show()
-        highlights = arrayListOf()
         viewModel.fetchHighlights()
+        highlights.clear()
+        highlightAdapter.currentList.clear()
         viewModel.highlightSnapshot.observe(viewLifecycleOwner) { snapshot ->
             binding.progressLoader.hide()
             snapshot?.children?.forEach {
@@ -92,12 +96,11 @@ class FragmentHome : Fragment() {
 
     private fun configureAdapter() {
         if (highlights.isNotEmpty()) {
-            val highlightsAdapter = HighlightAdapter(initGlide())
-            binding.highlightsRecyclerView.adapter = highlightsAdapter
-            highlightsAdapter.submitList(highlights)
+            binding.highlightsRecyclerView.adapter = highlightAdapter
+            highlightAdapter.submitList(highlights)
             binding.highlightsRecyclerView.setHasFixedSize(true)
 
-            highlightsAdapter.setOnItemClickListener(object : HighlightAdapter.OnItemClickListener {
+            highlightAdapter.setOnItemClickListener(object : HighlightAdapter.OnItemClickListener {
                 override fun onHighlightClick(highlight: Highlight) {
                     openYoutubeLink(highlight.videoID)
                 }
@@ -117,7 +120,7 @@ class FragmentHome : Fragment() {
         val options = RequestOptions()
             .placeholder(R.drawable.white_background)
             .error(R.drawable.white_background)
-        return Glide.with(this)
+        return GlideApp.with(this)
             .setDefaultRequestOptions(options)
     }
 
