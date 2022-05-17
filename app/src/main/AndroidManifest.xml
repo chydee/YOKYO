@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".view.main.MainActivity"
             android:clearTaskOnLaunch="true"
             android:exported="true"
             android:launchMode="singleTop"

@@ -6,9 +6,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.nwanneka.yokyo.MainActivity
 import com.nwanneka.yokyo.R
 import com.nwanneka.yokyo.databinding.ActivityYokyoAuthBinding
+import com.nwanneka.yokyo.view.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.nwanneka.yokyo
+package com.nwanneka.yokyo.view.main
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -7,8 +7,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.nwanneka.yokyo.R
 import com.nwanneka.yokyo.databinding.ActivityMainBinding
-import com.nwanneka.yokyo.view.main.MainViewModel
 import com.nwanneka.yokyo.view.utils.hide
 import com.nwanneka.yokyo.view.utils.show
 import dagger.hilt.android.AndroidEntryPoint

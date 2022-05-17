@@ -9,9 +9,9 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.nwanneka.yokyo.MainActivity
 import com.nwanneka.yokyo.R
 import com.nwanneka.yokyo.databinding.FragmentSignUpBinding
+import com.nwanneka.yokyo.view.main.MainActivity
 import com.nwanneka.yokyo.view.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
