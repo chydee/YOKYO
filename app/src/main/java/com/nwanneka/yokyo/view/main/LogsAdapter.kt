@@ -40,7 +40,7 @@ class LogsAdapter : ListAdapter<Logg, LogsAdapter.LogsViewHolder>(DiffCallback) 
 
     companion object DiffCallback : DiffUtil.ItemCallback<Logg>() {
         override fun areContentsTheSame(oldItem: Logg, newItem: Logg): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.uid == newItem.uid
         }
 
         override fun areItemsTheSame(oldItem: Logg, newItem: Logg): Boolean {

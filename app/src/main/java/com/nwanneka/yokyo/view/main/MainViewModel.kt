@@ -52,7 +52,6 @@ class MainViewModel @Inject constructor() : ViewModel() {
     fun createLogg(log: Logg) {
         coroutineScope.launch {
             val logObject = hashMapOf(
-                "id" to log.id,
                 "uid" to log.uid,
                 "location" to log.location,
                 "long" to log.long,

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -22,14 +23,18 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.nwanneka.yokyo.R
 import com.nwanneka.yokyo.data.Logg
+import com.nwanneka.yokyo.view.main.MainViewModel
 import com.nwanneka.yokyo.view.main.modals.CreateLogModal
 import com.nwanneka.yokyo.view.main.modals.CreateLogModalDelegate
+import com.nwanneka.yokyo.view.utils.showToastMessage
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 import java.util.*
 
 @AndroidEntryPoint
 class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDelegate {
+
+    private val mainViewModel: MainViewModel by viewModels()
 
     private var mMap: GoogleMap? = null
 
@@ -39,8 +44,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
     private var mFusedLocationClient: FusedLocationProviderClient? = null
 
     private var addressLine: String? = null
-    private var time: String? = null
-    private var date: String? = null
 
     private var mLocationCallback: LocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
@@ -82,6 +85,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
         if (mapFragment != null) {
             mapFragment!!.getMapAsync(this)
         }
+
+        mainViewModel.errorLiveData.observe(this) {
+            showToastMessage(it)
+        }
     }
 
     /**
@@ -122,22 +129,18 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
             getAddress(latLng.latitude, latLng.longitude)
 
             val bundle: Bundle = Bundle()
-            //bundle.putParcelable(EXTRA_DOCUMENT, documents)
+            bundle.putString("EXTRA_LOCATION", addressLine)
+            bundle.putLong("EXTRA_LAT", latLng.latitude.toLong())
+            bundle.putLong("EXTRA_LONG", latLng.longitude.toLong())
             val createLogModal = CreateLogModal(this@MapActivity)
             createLogModal.arguments = bundle
             createLogModal.isCancelable = true
             createLogModal.show(supportFragmentManager, createLogModal.tag)
-
-            /*val returnIntent = Intent()
-            returnIntent.putExtra("location", addressLine)
-            setResult(RESULT_OK, returnIntent)
-            finish()*/
         }
     }
 
     override fun onPause() {
         super.onPause()
-
         //stop location updates when Activity is no longer active
         if (mFusedLocationClient != null) {
             mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
@@ -186,30 +189,29 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
         val geocoder = Geocoder(this@MapActivity, Locale.getDefault())
         try {
             val addresses = geocoder.getFromLocation(lat, lng, 1)
-            val obj = addresses[0]
-            addressLine = obj.getAddressLine(0)
-            /*add = add + "\n" + obj.getCountryName();
+            if (addresses.isNotEmpty()) {
+                val obj = addresses[0]
+                addressLine = obj.getAddressLine(0)
+                /*add = add + "\n" + obj.getCountryName();
             add = add + "\n" + obj.getCountryCode();
             add = add + "\n" + obj.getAdminArea();
             add = add + "\n" + obj.getPostalCode();
             add = add + "\n" + obj.getSubAdminArea();
             add = add + "\n" + obj.getLocality();
-            add = add + "\n" + obj.getSubThoroughfare();*/Log.v("IGA", "Address$addressLine")
+            add = add + "\n" + obj.getSubThoroughfare();*/
+                Log.v("IGA", "Address$addressLine")
+            }
         } catch (e: IOException) {
             e.printStackTrace()
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun getCurrentTimeAndDate() {
-
-    }
-
-    override fun onCancel(log: Logg) {
-
+    override fun onCancel() {
+        showToastMessage("Cancelled")
     }
 
     override fun onSave(log: Logg) {
-
+        showToastMessage("Location information submitted successfully")
     }
 }

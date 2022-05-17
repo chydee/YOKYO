@@ -6,7 +6,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Logg(
-    val id: Int,
     val uid: String,
     val location: String,
     val long: Long,
