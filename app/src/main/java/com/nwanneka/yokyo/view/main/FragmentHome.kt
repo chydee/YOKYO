@@ -8,7 +8,7 @@ import android.view.*
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.database.ktx.getValue
@@ -27,7 +27,7 @@ class FragmentHome : Fragment() {
 
     private var binding: FragmentHomeBinding by autoCleared()
 
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     private lateinit var highlights: ArrayList<Highlight>
     private lateinit var highlightAdapter: HighlightAdapter

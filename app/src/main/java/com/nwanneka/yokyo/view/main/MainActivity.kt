@@ -1,7 +1,6 @@
 package com.nwanneka.yokyo.view.main
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -17,8 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-    private val mainViewModel: MainViewModel by viewModels()
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
 
