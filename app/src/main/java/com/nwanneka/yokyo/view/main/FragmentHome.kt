@@ -11,11 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.RequestManager
-import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.database.ktx.getValue
 import com.nwanneka.yokyo.R
-import com.nwanneka.yokyo.core.GlideApp
 import com.nwanneka.yokyo.data.Highlight
 import com.nwanneka.yokyo.databinding.FragmentHomeBinding
 import com.nwanneka.yokyo.view.utils.autoCleared
@@ -45,7 +42,7 @@ class FragmentHome : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         highlights = arrayListOf()
-        highlightAdapter = HighlightAdapter(initGlide())
+        highlightAdapter = HighlightAdapter()
         setupHomeMenu()
         fetchHighlights()
     }
@@ -114,14 +111,6 @@ class FragmentHome : Fragment() {
             binding.highlightsRecyclerView.hide()
         }
 
-    }
-
-    private fun initGlide(): RequestManager {
-        val options = RequestOptions()
-            .placeholder(R.drawable.white_background)
-            .error(R.drawable.white_background)
-        return GlideApp.with(this)
-            .setDefaultRequestOptions(options)
     }
 
     private fun openYoutubeLink(youtubeID: String) {

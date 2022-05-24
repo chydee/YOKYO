@@ -8,7 +8,7 @@ import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 
 @GlideModule
-open class YokyoGlideModule : AppGlideModule() {
+class YokyoGlideApp : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         super.applyOptions(context, builder)
         builder.apply { RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL) }

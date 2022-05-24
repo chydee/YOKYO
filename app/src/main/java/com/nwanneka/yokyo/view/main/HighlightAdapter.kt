@@ -5,11 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
+import com.nwanneka.yokyo.R
+import com.nwanneka.yokyo.core.GlideApp
 import com.nwanneka.yokyo.data.Highlight
 import com.nwanneka.yokyo.databinding.ItemHighlightBinding
 
-class HighlightAdapter constructor(private val requestManager: RequestManager) : ListAdapter<Highlight, HighlightAdapter.HighlightViewHolder>(DiffCallback) {
+class HighlightAdapter : ListAdapter<Highlight, HighlightAdapter.HighlightViewHolder>(DiffCallback) {
 
     interface OnItemClickListener {
         fun onHighlightClick(highlight: Highlight)
@@ -22,7 +23,10 @@ class HighlightAdapter constructor(private val requestManager: RequestManager) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(highlight: Highlight) {
             binding.highlightTitle.text = highlight.title
-            requestManager.load(highlight.thumbnail)
+            GlideApp.with(binding.root.context)
+                .load(highlight.thumbnail)
+                .centerCrop()
+                .placeholder(R.drawable.waha)
                 .into(binding.highlightThumbNail)
             binding.btnShareHighlight.setOnClickListener {
                 listener.onShareClicked("${highlight.title}: http://www.youtube.com/watch?v=${highlight.videoID}")
