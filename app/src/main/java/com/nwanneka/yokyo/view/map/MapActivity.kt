@@ -222,5 +222,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
 
     override fun onSave(log: Logg) {
         showToastMessage("Location information submitted successfully")
+        finish()
     }
 }

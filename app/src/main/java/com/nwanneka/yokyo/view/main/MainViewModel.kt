@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -12,10 +13,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.nwanneka.yokyo.R
@@ -23,6 +22,7 @@ import com.nwanneka.yokyo.data.Logg
 import com.nwanneka.yokyo.view.utils.minimumEightInLength
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,13 +46,15 @@ class MainViewModel @Inject constructor() : ViewModel() {
         getCurrentUser()
     }
 
-    private val _log = MutableLiveData<DocumentReference>()
-    val logLiveData: LiveData<DocumentReference>
+    private val _log = MutableLiveData<String>()
+    val logLiveData: LiveData<String>
         get() = _log
 
     fun createLogg(log: Logg) {
         coroutineScope.launch {
             val logObject = hashMapOf(
+                "documentId" to Timestamp(Date()).toString(),
+                "uid" to log.uid,
                 "uid" to log.uid,
                 "location" to log.location,
                 "long" to log.long,
@@ -61,13 +63,33 @@ class MainViewModel @Inject constructor() : ViewModel() {
                 "time" to log.time,
             )
             db.collection("logs")
-                .add(logObject)
+                .document(log.documentId!!)
+                .set(logObject)
                 .addOnSuccessListener {
-                    _log.postValue(it)
+                    _log.postValue("DocumentSnapshot successfully written!")
                 }
                 .addOnFailureListener { e ->
                     _error.postValue(e.message)
                     e.printStackTrace()
+                }
+        }
+    }
+
+    private val _isDelete = MutableLiveData<Boolean>()
+    val isDelete: LiveData<Boolean>
+        get() = _isDelete
+
+    fun deleteLogg(log: Logg) {
+        coroutineScope.launch {
+            db.collection("logs").document(log.documentId!!)
+                .delete()
+                .addOnSuccessListener {
+                    _isDelete.postValue(true)
+                }
+                .addOnFailureListener { e ->
+                    e.printStackTrace()
+                    _isDelete.postValue(false)
+                    _error.postValue(e.message)
                 }
         }
     }
@@ -79,14 +101,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
     fun fetchAllMyLog(uid: String) {
         coroutineScope.launch {
             withContext(Dispatchers.Default) {
-                val settings = FirebaseFirestoreSettings.Builder()
-                    .setPersistenceEnabled(true)
-                    .build()
-                db.firestoreSettings = settings
-                val ref = db.collection("logs").whereEqualTo("uid", uid)
-                // Source can be CACHE, SERV
-                val source = Source.CACHE
-                ref.get(source)
+                db.collection("logs").whereEqualTo("uid", uid).orderBy("date", Query.Direction.DESCENDING).get()
                     .addOnSuccessListener {
                         _myLogs.postValue(it)
                     }
@@ -173,7 +188,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
     fun fetchHighlights() {
         coroutineScope.launch {
-            database?.child("highlights")?.get()
+            database?.child("highlights")?.orderByPriority()?.get()
                 ?.addOnSuccessListener { snapshot ->
                     if (snapshot.exists() && snapshot.hasChildren()) {
                         _highlights.postValue(snapshot)

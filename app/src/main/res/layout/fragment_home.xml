@@ -6,14 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".view.main.FragmentHome">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/highlightsRecyclerView"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/margin_small"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_highlight" />
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_medium"
+            android:background="@drawable/searchview_container"
+            android:clickable="true"
+            android:focusable="true"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="@dimen/normal_text_size"
+            android:theme="@style/SearchViewTheme"
+            app:closeIcon="@drawable/ic_baseline_close_24"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@android:color/transparent"
+            app:queryHint="@string/search_hint"
+            app:searchIcon="@null" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/highlightsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_small"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_highlight" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView
         android:id="@+id/emptyState"

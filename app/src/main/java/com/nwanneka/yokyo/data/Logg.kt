@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Logg(
+    val documentId: String? = null,
     val uid: String? = null,
     val location: String? = null,
     val long: Long? = null,

@@ -44,6 +44,7 @@
         android:text="@string/share_btn_text"
         android:textColor="@color/secondaryTextColor"
         android:textSize="@dimen/normal_text_size"
+        app:backgroundTint="@color/primaryColor"
         app:layout_constraintBottom_toBottomOf="@+id/btnRemove"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

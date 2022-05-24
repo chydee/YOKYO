@@ -5,18 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.nwanneka.yokyo.R
 import com.nwanneka.yokyo.data.Logg
 import com.nwanneka.yokyo.databinding.SheetLogDetailsBinding
-import com.nwanneka.yokyo.view.main.MainViewModel
 import com.nwanneka.yokyo.view.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LogDetailsModal constructor(private val delegate: LogDetailsModalDelegate) : BottomSheetDialogFragment() {
-    private val viewModel: MainViewModel by activityViewModels()
 
     private var _binding: SheetLogDetailsBinding by autoCleared()
     private val binding

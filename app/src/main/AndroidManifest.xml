@@ -19,7 +19,6 @@
         <activity
             android:name=".view.auth.YokyoAuthActivity"
             android:exported="true"
-            android:noHistory="true"
             android:theme="@style/Theme.Yokyo.Auth">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,17 +29,10 @@
         <activity
             android:name=".view.main.MainActivity"
             android:exported="true"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+            android:noHistory="true" />
         <activity
             android:name=".view.map.MapActivity"
             android:exported="true"
-            android:noHistory="false"
             android:parentActivityName=".view.main.MainActivity" />
 
         <meta-data

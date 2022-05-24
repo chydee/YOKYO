@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.google.firebase.firestore.ktx.toObject
 import com.nwanneka.yokyo.data.Logg
 import com.nwanneka.yokyo.databinding.FragmentLogsBinding
@@ -28,7 +28,7 @@ class FragmentLogs : Fragment(), LogDetailsModalDelegate {
 
     private lateinit var logs: ArrayList<Logg>
 
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +46,7 @@ class FragmentLogs : Fragment(), LogDetailsModalDelegate {
         fetchMyLogs(uid)
 
         binding.fabCreateLog.setOnClickListener {
-            startActivity(Intent(requireContext(), MapActivity::class.java))
+            startActivity(Intent(requireActivity(), MapActivity::class.java))
         }
 
         viewModel.errorLiveData.observe(viewLifecycleOwner) {
@@ -60,7 +60,6 @@ class FragmentLogs : Fragment(), LogDetailsModalDelegate {
             val logsAdapter = LogsAdapter()
             binding.logRecyclerView.adapter = logsAdapter
             logsAdapter.submitList(logs)
-            binding.logRecyclerView.setHasFixedSize(true)
 
             logsAdapter.setOnItemClickListener(object : LogsAdapter.OnItemClickListener {
 
@@ -95,8 +94,13 @@ class FragmentLogs : Fragment(), LogDetailsModalDelegate {
         }
     }
 
-    private fun deleteLog() {
-
+    private fun deleteLog(logg: Logg) {
+        viewModel.deleteLogg(logg)
+        viewModel.isDelete.observe(viewLifecycleOwner) {
+            if (it) {
+                showToastMessage("Log Removed Successfully")
+            }
+        }
     }
 
     private fun shareLogInfo(content: String) {
@@ -111,7 +115,7 @@ class FragmentLogs : Fragment(), LogDetailsModalDelegate {
     }
 
     override fun onRemove(logg: Logg) {
-        showToastMessage("Coming soon")
+        deleteLog(logg)
     }
 
     override fun onShare(content: String) {

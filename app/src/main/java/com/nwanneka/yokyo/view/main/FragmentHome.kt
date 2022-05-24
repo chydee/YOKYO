@@ -15,6 +15,7 @@ import com.google.firebase.database.ktx.getValue
 import com.nwanneka.yokyo.R
 import com.nwanneka.yokyo.data.Highlight
 import com.nwanneka.yokyo.databinding.FragmentHomeBinding
+import com.nwanneka.yokyo.view.DebouncingQueryTextListener
 import com.nwanneka.yokyo.view.utils.autoCleared
 import com.nwanneka.yokyo.view.utils.hide
 import com.nwanneka.yokyo.view.utils.show
@@ -43,8 +44,22 @@ class FragmentHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         highlights = arrayListOf()
         highlightAdapter = HighlightAdapter()
+        configureSearchView()
         setupHomeMenu()
         fetchHighlights()
+    }
+
+    private fun configureSearchView() {
+        binding.searchView.setOnQueryTextListener(
+            DebouncingQueryTextListener(
+                this.lifecycle
+            ) { newText ->
+                newText?.let {
+                    if (it.isNotEmpty()) {
+                        // Do the search here
+                    }
+                }
+            })
     }
 
     private fun fetchHighlights() {
