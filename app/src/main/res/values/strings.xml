@@ -44,4 +44,6 @@
     <string name="log_screen_info">Here you can find your location logs</string>
     <string name="empty_log_state">You don\'t have anything in your log, click on the plus \'+\' button to create a new log</string>
     <string name="search_hint">Search For Highlights</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

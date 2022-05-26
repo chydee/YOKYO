@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/fragmentHome"
         android:name="com.nwanneka.yokyo.view.main.FragmentHome"
-        android:label="fragment_home"
+        android:label="Home"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/to_fragmentAbout"
@@ -24,16 +24,32 @@
     <fragment
         android:id="@+id/fragmentLogs"
         android:name="com.nwanneka.yokyo.view.main.FragmentLogs"
-        android:label="fragment_logs"
-        tools:layout="@layout/fragment_logs" />
+        android:label="My Logs"
+        tools:layout="@layout/fragment_logs">
+        <action
+            android:id="@+id/to_mapFragment"
+            app:destination="@id/mapFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/fragmentLogs"
+            app:popUpToInclusive="false" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentProfile"
         android:name="com.nwanneka.yokyo.view.main.FragmentProfile"
-        android:label="fragment_profile"
+        android:label="Account"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/fragmentAbout"
         android:name="com.nwanneka.yokyo.view.main.FragmentAbout"
-        android:label="fragment_about"
+        android:label="About"
         tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.nwanneka.yokyo.view.map.MapFragment"
+        android:label="Log Location"
+        tools:layout="@layout/fragment_map" />
 </navigation>

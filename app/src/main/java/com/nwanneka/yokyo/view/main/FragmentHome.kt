@@ -43,7 +43,7 @@ class FragmentHome : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         highlights = arrayListOf()
-        highlightAdapter = HighlightAdapter()
+        configureAdapter()
         configureSearchView()
         setupHomeMenu()
         fetchHighlights()
@@ -56,7 +56,9 @@ class FragmentHome : Fragment() {
             ) { newText ->
                 newText?.let {
                     if (it.isNotEmpty()) {
-                        // Do the search here
+                        highlightAdapter.filter.filter(it)
+                    } else {
+                        fetchHighlights()
                     }
                 }
             })
@@ -65,8 +67,6 @@ class FragmentHome : Fragment() {
     private fun fetchHighlights() {
         binding.progressLoader.show()
         viewModel.fetchHighlights()
-        highlights.clear()
-        highlightAdapter.currentList.clear()
         viewModel.highlightSnapshot.observe(viewLifecycleOwner) { snapshot ->
             binding.progressLoader.hide()
             snapshot?.children?.forEach {
@@ -79,7 +79,14 @@ class FragmentHome : Fragment() {
                     )
                 )
             }
-            configureAdapter()
+            if (highlights.isNotEmpty()) {
+                binding.emptyState.hide()
+                binding.highlightsRecyclerView.show()
+                highlightAdapter.submitList(highlights)
+            } else {
+                binding.emptyState.show()
+                binding.highlightsRecyclerView.hide()
+            }
         }
     }
 
@@ -107,24 +114,19 @@ class FragmentHome : Fragment() {
     }
 
     private fun configureAdapter() {
-        if (highlights.isNotEmpty()) {
-            binding.highlightsRecyclerView.adapter = highlightAdapter
-            highlightAdapter.submitList(highlights)
-            binding.highlightsRecyclerView.setHasFixedSize(true)
+        highlightAdapter = HighlightAdapter()
+        binding.highlightsRecyclerView.adapter = highlightAdapter
+        binding.highlightsRecyclerView.setHasFixedSize(true)
 
-            highlightAdapter.setOnItemClickListener(object : HighlightAdapter.OnItemClickListener {
-                override fun onHighlightClick(highlight: Highlight) {
-                    openYoutubeLink(highlight.videoID)
-                }
+        highlightAdapter.setOnItemClickListener(object : HighlightAdapter.OnItemClickListener {
+            override fun onHighlightClick(highlight: Highlight) {
+                openYoutubeLink(highlight.videoID)
+            }
 
-                override fun onShareClicked(content: String) {
-                    share(content)
-                }
-            })
-        } else {
-            binding.emptyState.show()
-            binding.highlightsRecyclerView.hide()
-        }
+            override fun onShareClicked(content: String) {
+                share(content)
+            }
+        })
 
     }
 

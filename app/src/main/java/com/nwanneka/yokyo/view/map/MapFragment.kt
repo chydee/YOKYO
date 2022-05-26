@@ -2,17 +2,21 @@ package com.nwanneka.yokyo.view.map
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
-import android.widget.Toast
-import androidx.activity.viewModels
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -24,16 +28,20 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.nwanneka.yokyo.R
 import com.nwanneka.yokyo.data.Logg
+import com.nwanneka.yokyo.databinding.FragmentMapBinding
 import com.nwanneka.yokyo.view.main.MainViewModel
 import com.nwanneka.yokyo.view.main.modals.CreateLogModal
 import com.nwanneka.yokyo.view.main.modals.CreateLogModalDelegate
+import com.nwanneka.yokyo.view.utils.autoCleared
 import com.nwanneka.yokyo.view.utils.showToastMessage
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 import java.util.*
 
 @AndroidEntryPoint
-class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDelegate {
+class MapFragment : Fragment(), OnMapReadyCallback, CreateLogModalDelegate {
+
+    private var binding: FragmentMapBinding by autoCleared()
 
     private val mainViewModel: MainViewModel by viewModels()
 
@@ -72,25 +80,30 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
     }
 
 
-    @SuppressLint("RestrictedApi")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_map)
-        supportActionBar!!.title = "Select location"
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDefaultDisplayHomeAsUpEnabled(true)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        // Inflate the layout for this fragment
+        binding = FragmentMapBinding.inflate(inflater)
+        return binding.root
+    }
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        mapFragment = supportFragmentManager
+        mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment?
 
         if (mapFragment != null) {
             mapFragment!!.getMapAsync(this)
         }
 
-        mainViewModel.errorLiveData.observe(this) {
+        showInstruction()
+
+        mainViewModel.errorLiveData.observe(viewLifecycleOwner) {
             showToastMessage(it)
         }
     }
@@ -105,8 +118,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+    @SuppressLint("MissingPermission")
+    override fun onMapReady(p0: GoogleMap) {
+        mMap = p0
         mMap!!.mapType = GoogleMap.MAP_TYPE_NORMAL
 
         mLocationRequest = LocationRequest()
@@ -116,7 +130,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
         mLocationRequest!!.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
 
         if (ContextCompat.checkSelfPermission(
-                this,
+                requireActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
             == PackageManager.PERMISSION_GRANTED
@@ -136,10 +150,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
             bundle.putString("EXTRA_LOCATION", addressLine)
             bundle.putLong("EXTRA_LAT", latLng.latitude.toLong())
             bundle.putLong("EXTRA_LONG", latLng.longitude.toLong())
-            val createLogModal = CreateLogModal(this@MapActivity)
+            val createLogModal = CreateLogModal(this@MapFragment)
             createLogModal.arguments = bundle
             createLogModal.isCancelable = true
-            createLogModal.show(supportFragmentManager, createLogModal.tag)
+            createLogModal.show(childFragmentManager, createLogModal.tag)
         }
     }
 
@@ -151,21 +165,25 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
+    override fun onCancel() {
+        showToastMessage("Cancelled")
+    }
+
+    override fun onSave(log: Logg) {
+        showToastMessage("Location information submitted successfully")
+        findNavController().popBackStack()
     }
 
     private val MY_PERMISSIONS_REQUEST_LOCATION = 99
 
     private fun checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
         ) {
 
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
+                    requireActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION
                 )
             ) {
@@ -173,12 +191,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-                AlertDialog.Builder(this)
+                AlertDialog.Builder(requireActivity())
                     .setTitle("Location Permission Needed")
                     .setMessage("This app needs the Location permission, please accept to use location functionality")
                     .setPositiveButton("OK") { _, _ -> //Prompt the user once explanation has been shown
                         ActivityCompat.requestPermissions(
-                            this@MapActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                            requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                             MY_PERMISSIONS_REQUEST_LOCATION
                         )
                     }
@@ -187,7 +205,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(
-                    this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     MY_PERMISSIONS_REQUEST_LOCATION
                 )
             }
@@ -195,7 +213,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
     }
 
     private fun getAddress(lat: Double, lng: Double) {
-        val geocoder = Geocoder(this@MapActivity, Locale.getDefault())
+        val geocoder = Geocoder(requireContext(), Locale.getDefault())
         try {
             val addresses = geocoder.getFromLocation(lat, lng, 1)
             if (addresses.isNotEmpty()) {
@@ -212,16 +230,19 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, CreateLogModalDeleg
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            e.message?.let { showToastMessage(it) }
         }
     }
 
-    override fun onCancel() {
-        showToastMessage("Cancelled")
+    private fun showInstruction() {
+        AlertDialog.Builder(requireActivity())
+            .setTitle("Dear Athlete")
+            .setMessage("Tap on a location on the map to record your current location, date and time")
+            .setPositiveButton("Ok", DialogInterface.OnClickListener { dialog, which ->
+                dialog.dismiss()
+            })
+            .create()
+            .show()
     }
 
-    override fun onSave(log: Logg) {
-        showToastMessage("Location information submitted successfully")
-        finish()
-    }
 }

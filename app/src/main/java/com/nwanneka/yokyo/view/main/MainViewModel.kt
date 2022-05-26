@@ -63,7 +63,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
                 "time" to log.time,
             )
             db.collection("logs")
-                .document(log.documentId!!)
+                .document(logObject["documentId"].toString())
                 .set(logObject)
                 .addOnSuccessListener {
                     _log.postValue("DocumentSnapshot successfully written!")
@@ -101,7 +101,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
     fun fetchAllMyLog(uid: String) {
         coroutineScope.launch {
             withContext(Dispatchers.Default) {
-                db.collection("logs").whereEqualTo("uid", uid).orderBy("date", Query.Direction.DESCENDING).get()
+                db.collection("logs").whereEqualTo("uid", uid).orderBy("documentId", Query.Direction.DESCENDING).get()
                     .addOnSuccessListener {
                         _myLogs.postValue(it)
                     }
@@ -198,6 +198,10 @@ class MainViewModel @Inject constructor() : ViewModel() {
                     }
                 }
         }
+    }
+
+    fun searchForHighlights(title: String) {
+
     }
 
     fun verifyPasswordText(context: Context, password: String): String {

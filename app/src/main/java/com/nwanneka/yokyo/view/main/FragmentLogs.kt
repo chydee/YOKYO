@@ -7,12 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.ktx.toObject
+import com.nwanneka.yokyo.R
 import com.nwanneka.yokyo.data.Logg
 import com.nwanneka.yokyo.databinding.FragmentLogsBinding
 import com.nwanneka.yokyo.view.main.modals.LogDetailsModal
 import com.nwanneka.yokyo.view.main.modals.LogDetailsModalDelegate
-import com.nwanneka.yokyo.view.map.MapActivity
 import com.nwanneka.yokyo.view.utils.autoCleared
 import com.nwanneka.yokyo.view.utils.hide
 import com.nwanneka.yokyo.view.utils.show
@@ -22,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FragmentLogs : Fragment(), LogDetailsModalDelegate {
 
+
     private var _binding: FragmentLogsBinding by autoCleared()
     private val binding
         get() = _binding
@@ -29,6 +31,7 @@ class FragmentLogs : Fragment(), LogDetailsModalDelegate {
     private lateinit var logs: ArrayList<Logg>
 
     private val viewModel: MainViewModel by viewModels()
+    private lateinit var logsAdapter: LogsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,11 +45,13 @@ class FragmentLogs : Fragment(), LogDetailsModalDelegate {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         logs = arrayListOf()
+        configureRecyclerView()
         val uid = viewModel.auth?.currentUser?.uid
         fetchMyLogs(uid)
 
+
         binding.fabCreateLog.setOnClickListener {
-            startActivity(Intent(requireActivity(), MapActivity::class.java))
+            findNavController().navigate(R.id.to_mapFragment)
         }
 
         viewModel.errorLiveData.observe(viewLifecycleOwner) {
@@ -55,28 +60,19 @@ class FragmentLogs : Fragment(), LogDetailsModalDelegate {
     }
 
     private fun configureRecyclerView() {
-        if (logs.isNotEmpty()) {
-            binding.listGroup.show()
-            val logsAdapter = LogsAdapter()
-            binding.logRecyclerView.adapter = logsAdapter
-            logsAdapter.submitList(logs)
+        logsAdapter = LogsAdapter()
+        binding.logRecyclerView.adapter = logsAdapter
+        logsAdapter.setOnItemClickListener(object : LogsAdapter.OnItemClickListener {
 
-            logsAdapter.setOnItemClickListener(object : LogsAdapter.OnItemClickListener {
-
-                override fun onLogItemClicked(logg: Logg) {
-                    val bundle: Bundle = Bundle()
-                    bundle.putParcelable("EXTRA_LOG", logg)
-                    val logDetailsModal = LogDetailsModal(this@FragmentLogs)
-                    logDetailsModal.arguments = bundle
-                    logDetailsModal.isCancelable = true
-                    logDetailsModal.show(childFragmentManager, logDetailsModal.tag)
-                }
-            })
-        } else {
-            binding.emptyState.show()
-            binding.listGroup.hide()
-        }
-
+            override fun onLogItemClicked(logg: Logg) {
+                val bundle: Bundle = Bundle()
+                bundle.putParcelable("EXTRA_LOG", logg)
+                val logDetailsModal = LogDetailsModal(this@FragmentLogs)
+                logDetailsModal.arguments = bundle
+                logDetailsModal.isCancelable = true
+                logDetailsModal.show(childFragmentManager, logDetailsModal.tag)
+            }
+        })
     }
 
     private fun fetchMyLogs(uid: String?) {
@@ -90,7 +86,14 @@ class FragmentLogs : Fragment(), LogDetailsModalDelegate {
                     logs.add(log)
                 }
             }
-            configureRecyclerView()
+            if (logs.isNotEmpty()) {
+                binding.listGroup.show()
+                binding.emptyState.hide()
+                logsAdapter.submitList(logs)
+            } else {
+                binding.listGroup.hide()
+                binding.emptyState.show()
+            }
         }
     }
 
@@ -116,6 +119,8 @@ class FragmentLogs : Fragment(), LogDetailsModalDelegate {
 
     override fun onRemove(logg: Logg) {
         deleteLog(logg)
+        logs.remove(logg)
+        logsAdapter.notifyDataSetChanged()
     }
 
     override fun onShare(content: String) {

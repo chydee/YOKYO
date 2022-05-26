@@ -1,6 +1,7 @@
 package com.nwanneka.yokyo.view.main
 
 import android.os.Bundle
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -25,6 +26,8 @@ class MainActivity : AppCompatActivity() {
             setContentView(root)
         }
 
+        val actionBar = (supportActionBar as ActionBar)
+
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
@@ -32,9 +35,13 @@ class MainActivity : AppCompatActivity() {
             .setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.fragmentAbout) {
+            if (destination.id == R.id.fragmentAbout || destination.id == R.id.mapFragment) {
+                actionBar.setDisplayHomeAsUpEnabled(true)
+                actionBar.setDefaultDisplayHomeAsUpEnabled(true)
                 binding.bottomNavigationMenu.hide()
             } else {
+                actionBar.setDisplayHomeAsUpEnabled(false)
+                actionBar.setDefaultDisplayHomeAsUpEnabled(false)
                 binding.bottomNavigationMenu.show()
             }
         }
