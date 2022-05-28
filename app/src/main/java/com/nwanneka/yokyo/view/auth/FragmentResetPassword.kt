@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.nwanneka.yokyo.databinding.FragmentResetPasswordBinding
 import com.nwanneka.yokyo.view.utils.autoCleared
@@ -19,7 +19,7 @@ class FragmentResetPassword : Fragment() {
 
     private var binding: FragmentResetPasswordBinding by autoCleared()
 
-    private val authViewModel: AuthViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
